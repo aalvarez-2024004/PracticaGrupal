@@ -12,7 +12,8 @@ const obtenerProductosDesdeInventario = async (token) => {
         throw new Error("La variable de entorno INVENTORY_SERVICE_URL no está configurada.");
     }
 
-    const formattedToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+    // Validación segura para evitar crasheos si el token no viene en los headers
+    const formattedToken = token && token.startsWith('Bearer ') ? token : (token ? `Bearer ${token}` : '');
 
     const response = await axios.get(`${INVENTORY_URL}/productos`, {
         headers: { 
