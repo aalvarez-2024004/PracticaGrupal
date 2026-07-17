@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
+import reportsRoutes from '../src/alerts/alerts.routes.js';
 
 const BASE_PATH = '/serviceReports/v1';
 
