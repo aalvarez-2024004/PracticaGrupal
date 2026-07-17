@@ -27,23 +27,30 @@ export const registerUser = async (data) => {
 
   const hashedPassword = await hashPassword(password.trim())
 
-  // Crear usuario (isActive en false por defecto para verificación por correo)
+  // Para el inventario activamos la cuenta de inmediato;
+  // el correo de verificación sigue disponible como refuerzo opcional.
   const user = await User.create({
     name: name.trim(),
     email: email.trim(),
     password: hashedPassword,
-    isActive: false
+    isActive: true
   })
 
-  // Generar y enviar token de verificación
   const verificationToken = generateVerificationToken(user)
-  await sendVerificationEmail(user.email, verificationToken)
+  sendVerificationEmail(user.email, verificationToken).catch((err) => {
+    console.error(`No se pudo enviar correo de verificación a ${user.email}:`, err.message)
+  })
+
+  const token = generateJWT(user)
 
   const userWithoutPassword = user.toJSON()
   delete userWithoutPassword.password
 
   return {
+    success: true,
+    message: 'Usuario registrado exitosamente',
     user: userWithoutPassword,
+    token,
     verificationToken
   }
 }

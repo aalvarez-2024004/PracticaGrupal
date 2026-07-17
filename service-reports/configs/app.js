@@ -5,29 +5,29 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import reportsRoutes from '../src/alerts/alerts.routes.js';
+import alertsRoutes from '../src/alerts/alerts.routes.js';
+import reportsRoutes from '../src/reports/reports.routes.js';
 
 const BASE_PATH = '/serviceReports/v1';
 
 export const initApp = () => {
-    const app = express();
+  const app = express();
 
-    app.use(express.json());
-    app.use(cors()); 
-    app.use(helmet());
-    app.use(morgan('dev'));
+  app.use(express.json());
+  app.use(cors());
+  app.use(helmet());
+  app.use(morgan('dev'));
 
-    // Registro de rutas para Alertas y Reportes
-    app.use(`${BASE_PATH}`, reportsRoutes);
-
-    // Endpoint de prueba / salud
-    app.get(`${BASE_PATH}/health`, (req, res) => {
-        res.status(200).json({
-            status: 'Healthy',
-            service: 'Service B: Alertas y Reportes funcionando',
-            timestamp: new Date().toISOString()
-        });
+  app.get(`${BASE_PATH}/health`, (req, res) => {
+    res.status(200).json({
+      status: 'Healthy',
+      service: 'Service B: Alertas y Reportes funcionando',
+      timestamp: new Date().toISOString()
     });
+  });
 
-    return app;
+  app.use(`${BASE_PATH}`, alertsRoutes);
+  app.use(`${BASE_PATH}`, reportsRoutes);
+
+  return app;
 };

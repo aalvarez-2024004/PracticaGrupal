@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import productRoutes from '../src/product/product.routes.js';
+import categoryRoutes from '../src/categoria/categoria.routes.js';
+import movementRoutes from '../src/movimiento/movimiento.routes.js';
 
 const BASE_PATH = '/inventarios/v1';
 
@@ -17,7 +19,6 @@ export const initApp = () => {
   app.use(helmet());
   app.use(morgan('dev'));
 
-  // Endpoint de prueba
   app.get(`${BASE_PATH}/health`, (req, res) => {
     res.status(200).json({
       status: 'Healthy',
@@ -27,6 +28,8 @@ export const initApp = () => {
   });
 
   app.use(`${BASE_PATH}/productos`, productRoutes);
+  app.use(`${BASE_PATH}/categorias`, categoryRoutes);
+  app.use(`${BASE_PATH}`, movementRoutes);
 
   return app;
 };

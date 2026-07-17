@@ -1,38 +1,41 @@
 'use strict';
+
 import mongoose from 'mongoose';
 
 const alertLogSchema = new mongoose.Schema(
-    {
-        type: {
-            type: String,
-            enum: ['BAJO_STOCK', 'AGOTADO'],
-            required: true
-        },
-        productId: {
-            type: String, 
-            required: true
-        },
-        productName: {
-            type: String,
-            required: true
-        },
-        category: {
-            type: String
-        },
-        stock: {
-            type: Number,
-            required: true,
-            min: 0
-        },
-        checkedBy: {
-            type: String, 
-            required: true
-        }
+  {
+    type: {
+      type: String,
+      enum: ['BAJO_STOCK', 'AGOTADO'],
+      required: true
     },
-    {
-        timestamps: true, 
-        versionKey: false
+    productId: {
+      type: String,
+      required: true
+    },
+    productName: {
+      type: String,
+      required: true
+    },
+    category: {
+      type: String,
+      default: ''
+    },
+    stock: {
+      type: Number,
+      required: true
+    },
+    checkedBy: {
+      type: String,
+      default: null
     }
+  },
+  {
+    timestamps: true,
+    versionKey: false
+  }
 );
+
+alertLogSchema.index({ productId: 1, type: 1, createdAt: -1 });
 
 export default mongoose.model('AlertLog', alertLogSchema);
