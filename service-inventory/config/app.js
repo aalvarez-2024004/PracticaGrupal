@@ -5,6 +5,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
+import productRoutes from '../src/product/product.routes.js';
+
 const BASE_PATH = '/inventarios/v1';
 
 export const initApp = () => {
@@ -23,6 +25,8 @@ export const initApp = () => {
       timestamp: new Date().toISOString()
     });
   });
+
+  app.use(`${BASE_PATH}/productos`, productRoutes);
 
   return app;
 };
